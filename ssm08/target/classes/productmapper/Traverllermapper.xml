@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.zh.Dao.TraverllerDao">
+    <select id="findbyid" parameterType="String" resultType="cn.zh.domin.Traveller">
+        SELECT t.* FROM traveller t,orders_traveller os WHERE t.tid=os.tid AND os.oid=#{oid}
+    </select>
+</mapper>

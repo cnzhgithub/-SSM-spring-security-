@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.zh.Dao.UserDao">
+    <resultMap id="user" type="cn.zh.domin.User">
+        <id property="id" column="id"/>
+        <result property="username" column="username"/>
+        <result property="password" column="password"/>
+        <result property="email" column="email"/>
+        <result property="uphonenum" column="uphonenum"/>
+        <result property="status" column="status"/>
+        <collection property="list" column="id" javaType="java.util.List" select="cn.zh.Dao.RoleDao.findbyid">
+
+        </collection>
+    </resultMap>
+    <select id="findall" resultType="cn.zh.domin.User">
+        select * from user
+    </select>
+
+    <select id="save" parameterType="cn.zh.domin.User">
+        insert into user(id,username,password,uphonenum,status) values(#{id},#{username},#{password},#{uphonenum},#{status})
+    </select>
+
+    <select id="findbyid" parameterType="String" resultMap="user">
+        select * from user where id=#{id}
+    </select>
+
+    <select id="findbyname" parameterType="String" resultMap="user">
+        select * from user where username=#{username}
+    </select>
+
+    <select id=" findbyid" parameterType="String" resultType="cn.zh.domin.User">
+        select * from user where id=#{id}
+    </select>
+
+    <select id="findrole" parameterType="String" resultType="cn.zh.domin.Role">
+        SELECT * FROM role WHERE role.rid NOT IN (SELECT rid FROM user_role WHERE user_role.id=#{id})
+    </select>
+
+    <select id="findoneuser" parameterType="String" resultType="cn.zh.domin.User">
+        select * from user where id=#{id}
+    </select>
+    
+    <select id="insertrole" parameterType="String">
+        insert into user_role(id,rid) values (#{id},#{rid})
+    </select>
+</mapper>

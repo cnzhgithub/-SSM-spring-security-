@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.zh.Dao.OrderDao">
+    <resultMap id="order" type="cn.zh.domin.Orders">
+        <id property="oid" column="oid"></id>
+        <result property="onum" column="onum"></result>
+        <result property="id" column="id"></result>
+        <result property="odate" column="odate"></result>
+        <result property="paytype" column="paytype"></result>
+        <result property="peoplecount" column="peopcount"></result>
+        <result property="odesc" column="odesc"></result>
+        <result property="ostatus" column="ostatus"></result>
+
+        <association property="product" column="id" javaType="cn.zh.domin.Product" select="cn.zh.Dao.ProductDao.findbyid">
+
+        </association>
+        <collection property="tlist" column="oid" javaType="java.util.List" select="cn.zh.Dao.TraverllerDao.findbyid">
+
+        </collection>
+    </resultMap>
+    <select id="findall" resultType="cn.zh.domin.Orders">
+        select * from orders
+    </select>
+    <select id="findbyid" parameterType="String" resultMap="order">
+      select * from orders where oid=#{oid}
+    </select>
+</mapper>
+        <!--private String date;//显示在页面的时间
+        private String paytype;//城市名
+        private Integer peoplecount;//人数
+        private String odesc;//订单描述
+        private String status;//显示在浏览器上的状态
+        private Integer ostatus;//订单状态
+        private Product product;
+        private Traveller traveller;-->

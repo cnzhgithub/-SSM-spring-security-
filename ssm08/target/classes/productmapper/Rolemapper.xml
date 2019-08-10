@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.zh.Dao.RoleDao">
+    <resultMap id="role" type="cn.zh.domin.Role">
+        <id property="rid" column="rid"/>
+        <result property="rname" column="rname"/>
+        <result property="rdesc" column="rdesc"/>
+        <collection property="list" column="rid" javaType="java.util.List" select="cn.zh.Dao.PermissionDao.findbyid">
+
+        </collection>
+    </resultMap>
+    <select id="findall" resultType="cn.zh.domin.Role">
+        select * from role
+    </select>
+    <select id="save" parameterType="cn.zh.domin.Role">
+        insert into role(rid,rname,rdesc) values (#{rid},#{rname},#{rdesc})
+    </select>
+
+    <select id="findbyid" parameterType="String" resultMap="role">
+        SELECT role.* FROM role,user_role WHERE role.rid=user_role.rid AND user_role.id=#{id}
+    </select>
+
+    <select id="findper" parameterType="String" resultType="cn.zh.domin.Permission">
+        SELECT * FROM permission WHERE permission.pid NOT IN (SELECT pid FROM role_premission WHERE role_premission.rid=#{rid})
+    </select>
+
+    <select id="findonerole" parameterType="String" resultType="cn.zh.domin.Role">
+        select * from role where rid=#{rid}
+    </select>
+
+    <select id="insertper" parameterType="String">
+        insert into role_premission(rid,pid) values (#{rid},#{pid})
+    </select>
+</mapper>

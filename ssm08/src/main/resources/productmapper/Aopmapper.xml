@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.zh.Dao.AoplogDao">
+    <select id="insertlog" parameterType="cn.zh.domin.SysLog">
+        insert into syslog(id,visittime,username,ip,url,executiontime,method) values(#{id},#{visittime},#{username},#{ip},#{url},#{executiontime},#{method})
+    </select>
+
+    <select id="findall" resultType="cn.zh.domin.SysLog">
+        select * from syslog
+    </select>
+</mapper>

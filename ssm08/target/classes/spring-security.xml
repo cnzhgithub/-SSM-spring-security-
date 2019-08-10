@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:security="http://www.springframework.org/schema/security"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:SECURITY="http://www.springframework.org/schema/security"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+         http://www.springframework.org/schema/beans/spring-beans.xsd
+          http://www.springframework.org/schema/security
+             http://www.springframework.org/schema/security/spring-security.xsd">
+
+    <!--配置不被拦截的资源-->
+    <security:http pattern="/login.jsp" security="none"/>
+    <security:http pattern="/file.jsp" security="none"/>
+    <security:http pattern="/resoures/css/**" security="none"/>
+    <security:http pattern="/resoures/img/**" security="none"/>
+    <security:http pattern="/resoures/plugins/**" security="none"/>
+    <SECURITY:global-method-security secured-annotations="enabled"></SECURITY:global-method-security>
+
+
+    <security:http auto-config="true" use-expressions="false">
+        <security:intercept-url pattern="/**" access="ROLE_USER,ROLE_ADMIN"/>
+        <!--配置登录成功跳转的页面-->
+        <security:form-login
+            login-page="/login.jsp"
+            login-processing-url="/login"
+            default-target-url="/index.jsp"
+            authentication-failure-forward-url="/fail.jsp"
+            authentication-failure-url="/fail.jsp"
+            authentication-success-forward-url="/pages/index.jsp"
+        />
+        <!--关闭跨域请求-->
+        <security:csrf disabled="true"/>
+        <security:logout invalidate-session="true" logout-url="/logout.do" logout-success-url="/login.jsp"/>
+    </security:http>
+      <security:authentication-manager>
+          <security:authentication-provider user-service-ref="IuserService">
+            <security:password-encoder ref="passwordEncoder"/>
+          </security:authentication-provider>
+      </security:authentication-manager>
+    <bean id="IuserService" class="cn.zh.Dao.iml.Iuseriml"/>
+
+
+<bean id="passwordEncoder" class="cn.zh.uitls.JWTPasswordEncoder"/>
+</beans>
